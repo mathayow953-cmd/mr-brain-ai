@@ -2,22 +2,21 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-@app.route('/', methods=['GET'])
+@app.route('/')
 def home():
-    return jsonify({"status": "online", "message": "Mr. Brain is active"})
+    return jsonify({"message": "Mr. Brain is active", "status": "online"})
 
-@app.route('/uliza', methods=['POST'])
-def ask():
-    try:
-        data = request.get_json()
-        swali = data.get('swali', '')
-        if not swali:
-            return jsonify({"error": "Tuma swali lako"}), 400
-        
-        jibu = f"Mr. Brain amepokea: {swali}"
-        return jsonify({"jibu": jibu})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+@app.route('/chat', methods=['POST'])
+def chat():
+    user_data = request.json
+    user_message = user_data.get("message", "")
+    
+    # Hapa ndipo unaweza kuweka akili ya AI yako baadaye
+    # Kwa sasa, tunamfanya ajibu kitu rahisi
+    bot_response = f"Nimepokea ujumbe wako: '{user_message}'. Mimi ni Mr. Brain, niko tayari kukusaidia!"
+    
+    return jsonify({"response": bot_response})
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(debug=True)
+
